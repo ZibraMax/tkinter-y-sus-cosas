@@ -66,7 +66,7 @@ def drawBezier():
     kp = k
     ue = u
     while not editando:
-        omega = np.sqrt(kp/m)
+        omega = np.sqrt(k/m)
         t += dt
         err = 1
         ud1 = 0
@@ -76,21 +76,21 @@ def drawBezier():
             ud1 = v + ((acel + udd1)/2)*dt
             ah = (1-2*beta)*acel+2*beta*udd1
             u1 = ue + v * dt + 1/2*ah*dt**2
-            udd2 = (-m*f(t)*9.81 - 2*m*omega*z*ud1-kp*u1)/m
+            udd2 = (-m*f(t)*9.81 - 2*m*omega*z*ud1-k*u1)/m
             err = abs(udd1-udd2)
             udd1 = udd2
         v = ud1
         ue = u1
         acel = udd1
 
-        q = kp*(ue-up)
+        q = k*(ue-up)
         flujo = abs(q-qsh)-qy
         if flujo < 0:
             kp = k
         else:
             deltaup = flujo/(k+ksh)*np.sign(q-qsh)
             deltaqsh = ksh*deltaup
-            kp = k
+            kp = ksh
             q = q-k*deltaup
             up = up + deltaup
             qsh = qsh + deltaqsh
@@ -341,7 +341,8 @@ L = 1.5
 z = 0.05
 m = 20
 k = 1500
-ksh = 0
+kh = 0*k
+ksh = kh*k/(k-kh)
 qsh = 0
 dt = 0.05
 up = 0
